@@ -186,10 +186,11 @@ estado_abreviacoes = {
 
 # Função para exibir uma queijaria
 def exibir_queijaria(queijaria):
+    endereco_google_maps = f"https://www.google.com/maps/search/?api=1&query={queijaria['endereco'].replace(' ', '+')}"
     st.markdown(f"""
     <div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin: 10px; flex: 1 1 30%; box-sizing: border-box;">
         <h3 style="margin-top: 0;"><a href="{queijaria['link']}" target="_blank" style="text-decoration: none; color: #007BFF;">{queijaria['nome']}</a></h3>
-        <p><strong>Endereço:</strong> {queijaria['endereco']}<br><strong>Telefone:</strong> {queijaria['telefone']}</p>
+        <p><strong>Endereço:</strong> <a href="{endereco_google_maps}" target="_blank">{queijaria['endereco']}</a><br><strong>Telefone:</strong> {queijaria['telefone']}</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -200,6 +201,7 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             header {visibility: hidden;}
             .css-1d391kg {padding-top: 2rem;}
+            .stSelectbox > div:first-child {pointer-events: none;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
