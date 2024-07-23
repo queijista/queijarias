@@ -210,13 +210,23 @@ termo_busca = st.text_input("Buscar queijaria ou cidade/estado")
 # Exibir lista de queijarias por cidade
 cidades = list(set(q["cidade"] for q in queijarias))
 cidades.insert(0, "Todos")  # Adicionar opção "Todos" no início da lista
-cidade_selecionada = st.selectbox("Selecione a cidade", cidades, index=0, format_func=lambda x: x)
+cidade_selecionada = st.selectbox("Selecione a cidade", cidades, index=0)
+
+# Normalizar o termo de busca
+termo_busca_normalizado = termo_busca.lower().strip()
+
+# Função para verificar se a queijaria corresponde ao termo de busca
+def corresponde_termo_busca(queijaria, termo):
+    nome_corresponde = termo in queijaria["nome"].lower()
+    cidade_corresponde = termo in queijaria["cidade"].lower()
+    estado_corresponde = any(termo in queijaria["cidade"].lower() for termo in estado_abreviacoes.keys()) or any(termo in estado.lower() for estado in estado_abreviacoes.values())
+    return nome_corresponde or cidade_corresponde or estado_corresponde
 
 # Filtrar queijarias pela cidade selecionada e termo de busca
 queijarias_filtradas = [
     q for q in queijarias 
     if (cidade_selecionada == "Todos" or q["cidade"] == cidade_selecionada) 
-    and (termo_busca.lower() in q["nome"].lower() or termo_busca.lower() in q["cidade"].lower() or estado_abreviacoes.get(termo_busca.upper(), "").lower() in q["cidade"].lower())
+    and corresponde_termo_busca(q, termo_busca_normalizado)
 ]
 
 # Container de cards
