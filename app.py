@@ -182,20 +182,12 @@ queijarias = [
 # Função para exibir uma queijaria
 def exibir_queijaria(queijaria):
     st.markdown(f"""
-    <div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin: 10px 0;">
-        <h3><a href="{queijaria['link']}" target="_blank" style="text-decoration: none; color: #007BFF;">{queijaria['nome']}</a></h3>
+    <div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin: 10px; flex: 1 1 30%; box-sizing: border-box;">
+        <h3 style="margin-top: 0;"><a href="{queijaria['link']}" target="_blank" style="text-decoration: none; color: #007BFF;">{queijaria['nome']}</a></h3>
         <p><strong>Endereço:</strong> {queijaria['endereco']}</p>
         <p><strong>Telefone:</strong> {queijaria['telefone']}</p>
     </div>
     """, unsafe_allow_html=True)
-
-# Título da página
-st.markdown("<h1 style='text-align: center; color: #333;'>Onde comprar queijo artesanal no Brasil</h1>", unsafe_allow_html=True)
-
-
-# Adiciona notificação de copyright
-st.markdown("---")
-st.markdown("© 2024 [queijista](https://queijista.com.br) - Todos os direitos reservados.")
 
 # Remover header e footer
 hide_streamlit_style = """
@@ -203,6 +195,7 @@ hide_streamlit_style = """
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
+            .css-1d391kg {padding-top: 2rem;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -218,6 +211,17 @@ if cidade_selecionada == "Todos":
 else:
     queijarias_filtradas = [q for q in queijarias if q["cidade"] == cidade_selecionada]
 
+# Container de cards
+st.markdown("""
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+""", unsafe_allow_html=True)
+
 # Exibir as queijarias da cidade selecionada
 for queijaria in queijarias_filtradas:
     exibir_queijaria(queijaria)
+
+# Fechar container de cards
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Adiciona notificação de copyright
+st.markdown("<div style='text-align: center; margin-top: 2rem;'>© 2024 <a href='https://queijista.com.br' target='_blank'>queijista</a> - Todos os direitos reservados.</div>", unsafe_allow_html=True)
