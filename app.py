@@ -193,15 +193,19 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Adicionar campo de busca com autocomplete
-termo_busca = st.text_input("Buscar queijaria ou cidade")
+termo_busca = st.text_input("Buscar queijaria ou cidade/estado")
 
 # Exibir lista de queijarias por cidade
 cidades = list(set(q["cidade"] for q in queijarias))
 cidades.insert(0, "Todos")  # Adicionar opção "Todos" no início da lista
-cidade_selecionada = st.selectbox("Selecione a cidade", cidades)
+cidade_selecionada = st.selectbox("Selecione a cidade", cidades, index=0)
 
 # Filtrar queijarias pela cidade selecionada e termo de busca
-queijarias_filtradas = [q for q in queijarias if (cidade_selecionada == "Todos" or q["cidade"] == cidade_selecionada) and (termo_busca.lower() in q["nome"].lower() or termo_busca.lower() in q["cidade"].lower())]
+queijarias_filtradas = [
+    q for q in queijarias 
+    if (cidade_selecionada == "Todos" or q["cidade"] == cidade_selecionada) 
+    and (termo_busca.lower() in q["nome"].lower() or termo_busca.lower() in q["cidade"].lower() or termo_busca.lower() in q["cidade"].split()[-1].lower())
+]
 
 # Container de cards
 st.markdown("""
