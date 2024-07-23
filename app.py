@@ -210,7 +210,7 @@ termo_busca = st.text_input("Buscar queijaria ou cidade/estado")
 # Exibir lista de queijarias por cidade
 cidades = list(set(q["cidade"] for q in queijarias))
 cidades.insert(0, "Todos")  # Adicionar opção "Todos" no início da lista
-cidade_selecionada = st.selectbox("Selecione a cidade", cidades, index=0)
+cidade_selecionada = st.selectbox("Selecione a cidade", cidades, index=0, key="selectbox", format_func=lambda x: x)
 
 # Normalizar o termo de busca
 termo_busca_normalizado = termo_busca.lower().strip()
@@ -219,7 +219,7 @@ termo_busca_normalizado = termo_busca.lower().strip()
 def corresponde_termo_busca(queijaria, termo):
     nome_corresponde = termo in queijaria["nome"].lower()
     cidade_corresponde = termo in queijaria["cidade"].lower()
-    estado_corresponde = any(termo in queijaria["cidade"].lower() for termo in estado_abreviacoes.keys()) or any(termo in estado.lower() for estado in estado_abreviacoes.values())
+    estado_corresponde = any(estado_abreviacoes.get(termo.upper(), "") in queijaria["cidade"].lower() for termo in estado_abreviacoes.keys())
     return nome_corresponde or cidade_corresponde or estado_corresponde
 
 # Filtrar queijarias pela cidade selecionada e termo de busca
@@ -242,4 +242,4 @@ for queijaria in queijarias_filtradas:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Adiciona notificação de copyright
-st.markdown("<div style='text-align: center; margin-top: 2rem;'>© 2024 <a href='https://queijista.com.br' target='_blank'>queijista</a> - Todos os direitos reservados.</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; margin-top: 2rem;'>© 2024 <a href='https://queijista.com' target='_blank'>queijista</a> - Todos os direitos reservados.</div>", unsafe_allow_html=True)
