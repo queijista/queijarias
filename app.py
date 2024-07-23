@@ -3,13 +3,6 @@ import streamlit as st
 # Lista de queijarias com informações adicionais
 queijarias = [
     {
-        "nome": "A Queijaria",
-        "endereco": "R. Aspicuelta, 35, V. Madalena",
-        "telefone": "3812-6449",
-        "cidade": "São Paulo SP",
-        "link": "http://www.aqueijaria.com.br/"
-    },
-    {
         "nome": "Armazém do Mineiro",
         "endereco": "R. Azevedo Soares, 1.653, V. Gomes Cardim",
         "telefone": "2309-4847",
@@ -184,8 +177,7 @@ def exibir_queijaria(queijaria):
     st.markdown(f"""
     <div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin: 10px; flex: 1 1 30%; box-sizing: border-box;">
         <h3 style="margin-top: 0;"><a href="{queijaria['link']}" target="_blank" style="text-decoration: none; color: #007BFF;">{queijaria['nome']}</a></h3>
-        <p><strong>Endereço:</strong> {queijaria['endereco']}</p>
-        <p><strong>Telefone:</strong> {queijaria['telefone']}</p>
+        <p><strong>Endereço:</strong> {queijaria['endereco']}<br><strong>Telefone:</strong> {queijaria['telefone']}</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -200,13 +192,13 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# Adicionar campo de busca com autocomplete
+termo_busca = st.text_input("Buscar queijaria")
+
 # Exibir lista de queijarias por cidade
 cidades = list(set(q["cidade"] for q in queijarias))
 cidades.insert(0, "Todos")  # Adicionar opção "Todos" no início da lista
 cidade_selecionada = st.selectbox("Selecione a cidade", cidades)
-
-# Adicionar campo de busca
-termo_busca = st.text_input("Buscar queijaria")
 
 # Filtrar queijarias pela cidade selecionada e termo de busca
 queijarias_filtradas = [q for q in queijarias if (cidade_selecionada == "Todos" or q["cidade"] == cidade_selecionada) and termo_busca.lower() in q["nome"].lower()]
