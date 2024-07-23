@@ -192,6 +192,21 @@ def exibir_queijaria(queijaria):
 # Título da página
 st.markdown("<h1 style='text-align: center; color: #333;'>Onde comprar queijo artesanal no Brasil</h1>", unsafe_allow_html=True)
 
+
+# Adiciona notificação de copyright
+st.markdown("---")
+st.markdown("© 2024 [queijista](https://queijista.com.br) - Todos os direitos reservados.")
+
+# Remover header e footer
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Exibir lista de queijarias por cidade
 cidades = list(set(q["cidade"] for q in queijarias))
 cidades.insert(0, "Todos")  # Adicionar opção "Todos" no início da lista
